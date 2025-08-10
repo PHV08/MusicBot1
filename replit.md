@@ -1,6 +1,6 @@
 # Overview
 
-This is a hybrid Discord music bot and web application built with a full-stack TypeScript architecture. The project combines a Discord bot for music playback functionality with a modern React web frontend. The Discord bot provides comprehensive music features including multi-platform support (YouTube, Spotify, SoundCloud), audio filters, queue management, and 24/7 voice channel functionality. The web application uses React with shadcn/ui components for a modern user interface.
+This is a Discord music bot built with JavaScript, Discord.js v14, and Shoukaku for Lavalink music functionality. The bot provides comprehensive music features including multi-platform support (YouTube, Spotify, SoundCloud), audio filters, queue management, and 24/7 voice channel functionality. The project has been organized into a proper Discord bot folder structure with improved nowplaying progress tracking and enhanced support command.
 
 # User Preferences
 
