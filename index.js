@@ -74,4 +74,4 @@ client.shoukaku.on('disconnect', (name, players, moved) => {
 });
 
 // Login
-client.login(process.env.DISCORD_TOKEN || config.token);
+client.login(process.env.DISCORD_BOT_TOKEN || config.token);
