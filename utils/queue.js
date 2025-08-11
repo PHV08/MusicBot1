@@ -7,6 +7,7 @@ class Queue {
         this.textChannel = textChannel;
         this.tracks = [];
         this.currentTrack = null;
+        this.previousTracks = []; // Track history for previous command
         this.player = null;
         this.volume = 100;
         this.paused = false;
@@ -33,6 +34,15 @@ class Queue {
         if (this.tracks.length === 0) {
             this.currentTrack = null;
             return;
+        }
+
+        // Add current track to previous tracks before switching
+        if (this.currentTrack) {
+            this.previousTracks.push(this.currentTrack);
+            // Keep only last 10 previous tracks to prevent memory issues
+            if (this.previousTracks.length > 10) {
+                this.previousTracks.shift();
+            }
         }
 
         const track = this.tracks.shift();
@@ -202,21 +212,11 @@ class Queue {
         }
         
         try {
-            const positionMs = Math.max(0, position * 1000);
-            const trackDurationMs = this.currentTrack.info.length;
-            const clampedPosition = Math.min(positionMs, trackDurationMs - 1000);
+            // Position should already be in milliseconds from the command
+            const clampedPosition = Math.max(0, Math.min(position, this.currentTrack.info.length - 1000));
             
-            // Use websocket message to Lavalink directly
-            await this.player.node.ws.send(JSON.stringify({
-                op: 'play',
-                guildId: this.guildId,
-                track: {
-                    encoded: this.currentTrack.encoded,
-                    userData: {}
-                },
-                position: clampedPosition
-            }));
-            
+            // Use Shoukaku's seek method
+            await this.player.seekTo(clampedPosition);
             return true;
         } catch (error) {
             console.error('Error seeking:', error);
@@ -241,16 +241,7 @@ class Queue {
         }
     }
 
-    clearTracks() {
-        this.tracks = [];
-    }
 
-    shuffle() {
-        for (let i = this.tracks.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [this.tracks[i], this.tracks[j]] = [this.tracks[j], this.tracks[i]];
-        }
-    }
 
     async join(voiceChannel, client) {
         if (!voiceChannel) {
