@@ -34,8 +34,10 @@ module.exports = {
             console.error('❌ Error refreshing commands:', error);
         }
 
-        // Auto-reconnect to 24/7 voice channels
-        await reconnect247Channels(client);
+        // Auto-reconnect to 24/7 voice channels with delay for Lavalink
+        setTimeout(async () => {
+            await reconnect247Channels(client);
+        }, 5000); // Wait 5 seconds for Lavalink to be fully ready
     }
 };
 
@@ -53,6 +55,13 @@ async function reconnect247Channels(client) {
             return; // No servers have 24/7 enabled
         }
         
+        // Check if Lavalink nodes are available
+        if (!client.shoukaku || client.shoukaku.nodes.size === 0) {
+            console.log('⚠️ No Lavalink nodes available, skipping 24/7 reconnection...');
+            return;
+        }
+        
+        console.log(`🔄 Reconnecting to ${data.servers.length} 24/7 voice channels...`);
         
         for (const server of data.servers) {
             try {
@@ -81,13 +90,13 @@ async function reconnect247Channels(client) {
                     continue;
                 }
                 
-                // Create queue and join voice channel
+                // Create queue and join voice channel with retry logic
                 const queue = createQueue(guild.id, voiceChannel, textChannel);
                 await queue.join(voiceChannel, client);
-        
+                console.log(`✅ Joined voice channel: ${voiceChannel.name}`);
                 
             } catch (error) {
-                console.error(`❌ Error reconnecting to guild ${server.guildId}:`, error);
+                console.error(`❌ Error reconnecting to guild ${server.guildId}:`, error.message);
             }
         }
         
