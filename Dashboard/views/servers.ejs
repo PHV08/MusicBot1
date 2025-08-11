@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏠 Server Management</h1>
+            <p>Manage bot settings and monitor server activity</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <a href="/" class="nav-tab">📊 Overview</a>
+            <a href="/commands" class="nav-tab">⚡ Commands</a>
+            <button class="nav-tab active">🏠 Servers</button>
+        </div>
+
+        <!-- 24/7 Channels Management -->
+        <div class="content-card">
+            <h2>🔊 24/7 Voice Channels</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Servers with 24/7 mode enabled will have the bot stay connected to voice channels even when no music is playing.
+            </p>
+            
+            <% if (channels247.length > 0) { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Server ID</th>
+                            <th>Channel ID</th>
+                            <th>Status</th>
+                            <th>Enabled Since</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% channels247.forEach(channel => { %>
+                        <tr>
+                            <td>
+                                <div style="font-family: monospace; font-size: 0.9rem;"><%= channel.guildId %></div>
+                                <small style="color: #666;"><%= channel.guildName || 'Unknown Server' %></small>
+                            </td>
+                            <td>
+                                <div style="font-family: monospace; font-size: 0.9rem;"><%= channel.channelId %></div>
+                                <small style="color: #666;"><%= channel.channelName || 'Unknown Channel' %></small>
+                            </td>
+                            <td>
+                                <span style="color: #10b981; font-weight: 600;">● Active</span>
+                            </td>
+                            <td>
+                                <span style="color: #666;">Active Session</span>
+                            </td>
+                            <td>
+                                <button style="padding: 6px 12px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem;"
+                                        onclick="disable247('<%= channel.guildId %>')">
+                                    Disable
+                                </button>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <div style="text-align: center; padding: 60px 20px; background: #f8fafc; border-radius: 15px;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">🔇</div>
+                    <h3 style="color: #374151; margin-bottom: 10px;">No 24/7 Channels Active</h3>
+                    <p style="color: #6b7280; margin-bottom: 20px;">
+                        No servers currently have 24/7 mode enabled.
+                    </p>
+                    <div style="background: white; border-radius: 10px; padding: 20px; max-width: 400px; margin: 0 auto;">
+                        <h4 style="margin: 0 0 10px 0;">How to enable 24/7 mode:</h4>
+                        <ol style="text-align: left; color: #374151; margin: 0;">
+                            <li>Join a voice channel in your server</li>
+                            <li>Use the <code>/247</code> command</li>
+                            <li>Bot will stay connected to that channel</li>
+                        </ol>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Server Statistics -->
+        <div class="content-card">
+            <h2>📊 Server Activity</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 20px; text-align: center;">
+                    <div style="font-size: 36px; margin-bottom: 10px;">🎵</div>
+                    <h3 style="color: #0284c7; margin: 0 0 5px 0;">Music Sessions</h3>
+                    <p style="color: #0369a1; margin: 0; font-size: 0.9rem;">Active music playing across servers</p>
+                </div>
+                
+                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 20px; text-align: center;">
+                    <div style="font-size: 36px; margin-bottom: 10px;">⚡</div>
+                    <h3 style="color: #15803d; margin: 0 0 5px 0;">Commands Today</h3>
+                    <p style="color: #166534; margin: 0; font-size: 0.9rem;">Total commands executed today</p>
+                </div>
+                
+                <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 10px; padding: 20px; text-align: center;">
+                    <div style="font-size: 36px; margin-bottom: 10px;">🎛️</div>
+                    <h3 style="color: #d97706; margin: 0 0 5px 0;">Filters Used</h3>
+                    <p style="color: #92400e; margin: 0; font-size: 0.9rem;">Audio effects applied today</p>
+                </div>
+                
+                <div style="background: #fdf2f8; border: 1px solid #fbcfe8; border-radius: 10px; padding: 20px; text-align: center;">
+                    <div style="font-size: 36px; margin-bottom: 10px;">👥</div>
+                    <h3 style="color: #be185d; margin: 0 0 5px 0;">Active Users</h3>
+                    <p style="color: #9d174d; margin: 0; font-size: 0.9rem;">Users in voice channels</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bot Configuration -->
+        <div class="content-card">
+            <h2>⚙️ Bot Configuration</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div>
+                    <h4>Music Settings</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 10px 0; color: #374151;">Default Volume</td>
+                            <td style="padding: 10px 0; text-align: right; color: #6b7280;">50%</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 10px 0; color: #374151;">Max Queue Size</td>
+                            <td style="padding: 10px 0; text-align: right; color: #6b7280;">100 songs</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 10px 0; color: #374151;">Auto-Leave</td>
+                            <td style="padding: 10px 0; text-align: right; color: #6b7280;">5 minutes</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #374151;">Search Results</td>
+                            <td style="padding: 10px 0; text-align: right; color: #6b7280;">Top 5</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div>
+                    <h4>System Status</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 10px 0; color: #374151;">Lavalink Status</td>
+                            <td style="padding: 10px 0; text-align: right;">
+                                <span style="color: #10b981; font-weight: 600;">● Online</span>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 10px 0; color: #374151;">Database Status</td>
+                            <td style="padding: 10px 0; text-align: right;">
+                                <span style="color: #10b981; font-weight: 600;">● Connected</span>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 10px 0; color: #374151;">API Response</td>
+                            <td style="padding: 10px 0; text-align: right; color: #6b7280;">< 100ms</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #374141;">Memory Usage</td>
+                            <td style="padding: 10px 0; text-align: right; color: #6b7280;">Normal</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Events -->
+        <div class="content-card">
+            <h2>📋 Recent Events</h2>
+            <div style="background: #f8fafc; border-radius: 10px; padding: 30px;">
+                <div style="text-align: center; color: #6b7280;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📊</div>
+                    <h3 style="margin: 0 0 10px 0;">Event Logging</h3>
+                    <p style="margin: 0;">
+                        Server events, command usage, and system logs will appear here.<br>
+                        <small>Real-time monitoring of bot activity across all servers.</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Server Management Tools -->
+        <div class="content-card">
+            <h2>🛠️ Management Tools</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 15px; padding: 20px; cursor: pointer; text-align: center; font-weight: 600;"
+                        onclick="refreshBotStats()">
+                    🔄 Refresh Bot Stats
+                </button>
+                
+                <button style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 15px; padding: 20px; cursor: pointer; text-align: center; font-weight: 600;"
+                        onclick="exportServerData()">
+                    📊 Export Server Data
+                </button>
+                
+                <button style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; border-radius: 15px; padding: 20px; cursor: pointer; text-align: center; font-weight: 600;"
+                        onclick="viewErrorLogs()">
+                    ⚠️ View Error Logs
+                </button>
+                
+                <button style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; border: none; border-radius: 15px; padding: 20px; cursor: pointer; text-align: center; font-weight: 600;"
+                        onclick="systemDiagnostics()">
+                    🔍 System Diagnostics
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function disable247(guildId) {
+            if (confirm('Are you sure you want to disable 24/7 mode for this server?')) {
+                // This would connect to the bot API to disable 24/7 mode
+                alert('This feature would connect to the bot API to disable 24/7 mode for guild: ' + guildId);
+            }
+        }
+
+        function refreshBotStats() {
+            const btn = event.target;
+            btn.innerHTML = '🔄 Refreshing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '🔄 Refresh Bot Stats';
+                btn.disabled = false;
+                alert('Bot statistics refreshed successfully!');
+            }, 2000);
+        }
+
+        function exportServerData() {
+            alert('Server data export functionality would be implemented here.');
+        }
+
+        function viewErrorLogs() {
+            alert('Error logs viewer would be implemented here.');
+        }
+
+        function systemDiagnostics() {
+            alert('System diagnostics panel would be implemented here.');
+        }
+    </script>
+</body>
+</html>

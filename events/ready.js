@@ -37,6 +37,11 @@ module.exports = {
         // Auto-reconnect to 24/7 voice channels with delay for Lavalink
         setTimeout(async () => {
             await reconnect247Channels(client);
+            
+            // Update stats after everything is initialized
+            if (client.statsManager) {
+                client.statsManager.updateBotStats(client);
+            }
         }, 5000); // Wait 5 seconds for Lavalink to be fully ready
     }
 };

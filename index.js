@@ -19,6 +19,10 @@ client.commands = new Collection();
 client.slashCommands = new Collection();
 client.musicPlayer = new Collection();
 
+// Initialize stats manager
+const StatsManager = require('./utils/statsManager');
+client.statsManager = new StatsManager();
+
 // Initialize Shoukaku
 const LavalinkServer = [{
     name: 'main',
@@ -72,6 +76,17 @@ client.shoukaku.on('disconnect', (name, players, moved) => {
     if (moved) return;
     console.log(`🔌 Lavalink ${name} disconnected`);
 });
+
+// Start Dashboard Server
+const dashboardPath = path.join(__dirname, 'Dashboard', 'server.js');
+if (fs.existsSync(dashboardPath)) {
+    try {
+        require('./Dashboard/server.js');
+        console.log('🌐 Dashboard server started');
+    } catch (error) {
+        console.error('❌ Failed to start dashboard:', error);
+    }
+}
 
 // Login
 client.login(process.env.DISCORD_BOT_TOKEN || config.token);
