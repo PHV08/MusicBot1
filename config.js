@@ -4,9 +4,9 @@ module.exports = {
     embedColor: '#00d4ff',
     ownerIds: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : ['1277220097185808406'],
     lavalink: {
-        host: process.env.LAVALINK_URL || 'lavalink.jirayu.net',
-        port: process.env.LAVALINK_PORT || 13592,
-        password: process.env.LAVALINK_PASSWORD || 'youshallnotpass'
+        host: process.env.LAVALINK_URL || 'lavalink.devxcode.in',
+        port: process.env.LAVALINK_PORT || 443,
+        password: process.env.LAVALINK_PASSWORD || 'DevamOP'
     },
     emojis: {
         play: '▶️',

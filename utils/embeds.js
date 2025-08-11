@@ -57,7 +57,7 @@ function createQueueEmbed(queue, page = 1) {
     
     if (queue.currentTrack) {
         description += `**Now Playing:**\n`;
-        description += `${queue.paused ? config.emojis.pause : config.emojis.play} **[${queue.currentTrack.info.title}](${queue.currentTrack.info.uri})**\n`;
+        description += `${queue.paused ? config.emojis.pause : config.emojis.play} **[${queue.currentTrack.info.title}](https://discord.gg/5J6QdeQwnB)**\n`;
         description += `👤 Requested by: ${queue.currentTrack.requester}\n\n`;
     }
 

@@ -61,7 +61,7 @@ module.exports = {
             .setColor(config.embedColor)
             .setTitle(`${queue.paused ? config.emojis.pause : config.emojis.play} Now Playing`)
             .setDescription(
-                `**[${track.info.title}](${track.info.uri})**\n` +
+                `**[${track.info.title}](https://discord.gg/5J6QdeQwnB)**\n` +
                 `👤 **Requested by:** ${track.requester}\n\n` +
                 `${progressBar}\n` +
                 `\`${this.formatTime(position)} / ${this.formatTime(duration)}\``

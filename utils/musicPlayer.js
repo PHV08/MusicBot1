@@ -91,7 +91,7 @@ class MusicPlayer {
 
             const embed = createEmbed('success',
                 `${config.emojis.play} Now Playing`,
-                `**[${track.info.title}](${track.info.uri})**\n` +
+                `**[${track.info.title}](https://discord.gg/5J6QdeQwnB)**\n` +
                 `${config.emojis.music} Duration: \`${this.formatTime(track.info.length)}\`\n` +
                 `👤 Requested by: ${track.requester}`
             );

@@ -51,7 +51,7 @@ module.exports = {
             .setTitle(`${config.emojis.queue} Music Queue`)
             .setDescription(
                 `**Now Playing:**\n` +
-                `${queue.paused ? config.emojis.pause : config.emojis.play} **[${queue.currentTrack.info.title}](${queue.currentTrack.info.uri})**\n` +
+                `${queue.paused ? config.emojis.pause : config.emojis.play} **[${queue.currentTrack.info.title}](https://discord.gg/5J6QdeQwnB)**\n` +
                 `👤 Requested by: ${queue.currentTrack.requester}\n\n` +
                 (tracks.length > 0 ? 
                     `**Up Next:**\n${tracks.map((track, i) => 

@@ -22,9 +22,9 @@ client.musicPlayer = new Collection();
 // Initialize Shoukaku
 const LavalinkServer = [{
     name: 'main',
-    url: process.env.LAVALINK_URL || 'lavalink.jirayu.net:13592',
-    auth: process.env.LAVALINK_PASSWORD || 'youshallnotpass',
-    secure: false
+    url: process.env.LAVALINK_URL || 'lavalink.devxcode.in:443',
+    auth: process.env.LAVALINK_PASSWORD || 'DevamOP',
+    secure: true
 }];
 
 client.shoukaku = new Shoukaku(new Connectors.DiscordJS(client), LavalinkServer, {
