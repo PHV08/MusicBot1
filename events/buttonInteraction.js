@@ -1,5 +1,6 @@
 const { createEmbed } = require('../utils/embeds');
 const { getQueue } = require('../utils/queue');
+const { createMusicButtons } = require('../utils/musicButtons');
 const config = require('../config');
 
 module.exports = {
@@ -45,6 +46,17 @@ module.exports = {
                             embeds: [createEmbed('success', `${config.emojis.pause} Music paused!`)], 
                             flags: 64 
                         });
+                    }
+                    
+                    // Update the original message with new button states
+                    try {
+                        const updatedButtons = createMusicButtons(queue);
+                        await interaction.message.edit({ 
+                            embeds: interaction.message.embeds, 
+                            components: updatedButtons 
+                        });
+                    } catch (editError) {
+                        console.log('Could not update buttons:', editError.message);
                     }
                     break;
 
@@ -113,6 +125,17 @@ module.exports = {
                         embeds: [createEmbed('success', `${loopEmojis[nextMode]}`)], 
                         ephemeral: true 
                     });
+                    
+                    // Update the original message with new button states
+                    try {
+                        const updatedButtons = createMusicButtons(queue);
+                        await interaction.message.edit({ 
+                            embeds: interaction.message.embeds, 
+                            components: updatedButtons 
+                        });
+                    } catch (editError) {
+                        console.log('Could not update buttons:', editError.message);
+                    }
                     break;
 
                 case 'music_volume_down':

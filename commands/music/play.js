@@ -271,66 +271,17 @@ module.exports = {
                 );
 
                 // Create interactive buttons
-                const {
-                    ActionRowBuilder,
-                    ButtonBuilder,
-                    ButtonStyle,
-                } = require("discord.js");
-
-                const row1 = new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                        .setCustomId("music_pause")
-                        .setLabel("⏸️ Pause")
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId("music_skip")
-                        .setLabel("⏭️ Skip")
-                        .setStyle(ButtonStyle.Primary),
-                    new ButtonBuilder()
-                        .setCustomId("music_queue")
-                        .setLabel("📜 Queue")
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId("music_stop")
-                        .setLabel("⏹️ Stop")
-                        .setStyle(ButtonStyle.Danger),
-                    new ButtonBuilder()
-                        .setCustomId("music_loop")
-                        .setLabel("🔁 Loop")
-                        .setStyle(ButtonStyle.Secondary),
-                );
-
-                const row2 = new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                        .setCustomId("music_volume_down")
-                        .setLabel("🔉 Vol-")
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId("music_volume_up")
-                        .setLabel("🔊 Vol+")
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId("music_shuffle")
-                        .setLabel("🔀 Shuffle")
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId("music_clear_queue")
-                        .setLabel("🗑️ Clear")
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId("music_disconnect")
-                        .setLabel("👋 Leave")
-                        .setStyle(ButtonStyle.Secondary),
-                );
+                const { createMusicButtons } = require('../../utils/musicButtons');
+                const components = createMusicButtons(queue);
 
                 return isSlash
                     ? context.editReply({
                           embeds: [embed],
-                          components: [row1, row2],
+                          components: components,
                       })
                     : context.reply({
                           embeds: [embed],
-                          components: [row1, row2],
+                          components: components,
                       });
             }
         } catch (error) {

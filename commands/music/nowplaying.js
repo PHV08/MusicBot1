@@ -90,7 +90,11 @@ module.exports = {
             })
             .setTimestamp();
 
-        return isSlash ? context.reply({ embeds: [embed] }) : context.reply({ embeds: [embed] });
+        // Add interactive buttons
+        const { createMusicButtons } = require('../../utils/musicButtons');
+        const components = createMusicButtons(queue);
+
+        return isSlash ? context.reply({ embeds: [embed], components: components }) : context.reply({ embeds: [embed], components: components });
     },
 
     formatTime(ms) {
