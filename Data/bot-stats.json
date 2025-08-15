@@ -1,0 +1,15 @@
+{
+  "status": "Online",
+  "guilds": 2,
+  "users": 18,
+  "voiceConnections": 1,
+  "songsPlayed": 0,
+  "commandsUsed": 0,
+  "lastRestart": "2025-08-11T16:50:45.393Z",
+  "dailyStats": {
+    "commands": 0,
+    "songsPlayed": 0,
+    "date": "Fri Aug 15 2025"
+  },
+  "uptime": "0m 7s"
+}
